@@ -22,6 +22,6 @@ public class HelloWorldController {
 
     @GetMapping("param/{name}")
     public String getHelloParam(@PathVariable ("name") String name) {
-        return name;
+        return "Hello, " + name;
     }
 }
