@@ -3,6 +3,8 @@ package com.rest.restfulwebservices.controller;
 import com.rest.restfulwebservices.model.User;
 import com.rest.restfulwebservices.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +27,8 @@ public class UserController {
     }
 
     @PostMapping("register")
-    public String registerUser(@RequestBody User user) {
-        userService.registerUser(user);
-        return "User registered";
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        User userResp = userService.registerUser(user);
+        return new ResponseEntity<>(userResp, HttpStatus.CREATED);
     }
 }
