@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
+
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
 @RequestMapping("user")
@@ -29,6 +33,12 @@ public class UserController {
     @PostMapping("register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         User userResp = userService.registerUser(user);
-        return new ResponseEntity<>(userResp, HttpStatus.CREATED);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(userResp.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }
