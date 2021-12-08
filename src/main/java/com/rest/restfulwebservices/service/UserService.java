@@ -20,4 +20,8 @@ public class UserService {
     public void registerUser(User user) {
         userRepository.save(user);
     }
+
+    public User getById(Long id) {
+        return userRepository.findById(id).get();
+    }
 }
