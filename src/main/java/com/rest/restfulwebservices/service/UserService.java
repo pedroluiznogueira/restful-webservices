@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -21,7 +22,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getById(Long id) {
-        return userRepository.findById(id).get();
+    public Optional<User> getById(Long id) {
+        return userRepository.findById(id);
     }
 }

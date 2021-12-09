@@ -1,5 +1,6 @@
 package com.rest.restfulwebservices.controller;
 
+import com.rest.restfulwebservices.exception.UserNotFoundException;
 import com.rest.restfulwebservices.model.User;
 import com.rest.restfulwebservices.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
@@ -21,8 +23,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("getById/{id}")
-    public User getById(@PathVariable ("id") Long id) {
-        return userService.getById(id);
+    public ResponseEntity<Optional<User>> getById(@PathVariable ("id") Long id) {
+        Optional<User> user = userService.getById(id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("id-" + id);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("getAll")
