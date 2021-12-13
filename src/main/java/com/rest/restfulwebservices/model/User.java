@@ -13,7 +13,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 2)
+    @Size(min = 2, message="Name should have at least two characters")
     private String name;
 
     public User() {
