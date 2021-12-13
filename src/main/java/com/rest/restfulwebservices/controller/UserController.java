@@ -25,6 +25,9 @@ public class UserController {
     @GetMapping("getById/{id}")
     public ResponseEntity<Optional<User>> getById(@PathVariable ("id") Long id) {
         Optional<User> user = userService.getById(id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("id-" + id);
+        }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
