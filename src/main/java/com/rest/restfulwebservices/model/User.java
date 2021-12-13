@@ -1,11 +1,10 @@
 package com.rest.restfulwebservices.model;
 
-import org.springframework.web.bind.annotation.RestController;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
@@ -14,6 +13,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 2)
     private String name;
 
     public User() {
