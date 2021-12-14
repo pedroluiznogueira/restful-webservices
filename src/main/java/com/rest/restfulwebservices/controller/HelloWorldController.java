@@ -3,6 +3,7 @@ package com.rest.restfulwebservices.controller;
 import com.rest.restfulwebservices.model.HelloWorld;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
@@ -30,11 +31,13 @@ public class HelloWorldController {
     }
 
     @GetMapping("hello-world-internationalization")
-    public String getHelloInternationalization(
-            @RequestHeader(name = "Accept-Language", required = false) Locale locale
-    ) {
+    public String getHelloInternationalization() {
         return messageSource
-                .getMessage("good.morning.message", null, "Default Message", locale);
+                .getMessage("good.morning.message",
+                        null,
+                        "Default Message",
+                        LocaleContextHolder.getLocale()
+                );
     }
 
 }
