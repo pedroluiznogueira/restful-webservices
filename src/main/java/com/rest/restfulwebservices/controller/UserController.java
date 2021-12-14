@@ -4,6 +4,8 @@ import com.rest.restfulwebservices.exception.UserNotFoundException;
 import com.rest.restfulwebservices.model.User;
 import com.rest.restfulwebservices.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +26,15 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("getById/{id}")
-    public ResponseEntity<Optional<User>> getById(@PathVariable ("id") Long id) {
+    public EntityModel<Optional<User>> getById(@PathVariable ("id") Long id) {
         Optional<User> user = userService.getById(id);
-        if (user.isEmpty()) {
-            throw new UserNotFoundException("id-" + id);
-        }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        if (user.isEmpty()) throw new UserNotFoundException("id-" + id);
+
+        EntityModel model =  EntityModel.of(user);
+        WebMvcLinkBuilder linkToUsers = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllUsers());
+        model.add(linkToUsers.withRel("get all users"));
+
+        return model;
     }
 
     @GetMapping("getAll")
@@ -53,6 +58,7 @@ public class UserController {
     public ResponseEntity<User> deleteUser(@PathVariable ("id") Long id) {
         User user = userService.deleteUser(id);
         if (user == null) return ResponseEntity.noContent().build();
+
         return ResponseEntity.ok(user);
     }
 }
