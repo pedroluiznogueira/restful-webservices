@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("person")
 public class PersonVersioningController {
 
-    @GetMapping(value = "header", headers = "X-API-VERSION=1")
+    @GetMapping(value = "produces", produces = "application/vnd.company-v1+json")
     public String personV1() {
         return new PersonV1("Pedro").getName();
     }
 
-    @GetMapping(value = "header", headers = "X-API-VERSION=2")
+    @GetMapping(value = "produces", produces = "application/vnd.company-v2+json")
     public Name personV2() {
         return new PersonV2(new Name("Pedro", "Luiz")).getName();
     }
